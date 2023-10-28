@@ -42,6 +42,5 @@ int main()
     {
         std::cout << "Not found any pair";
     }
-
     return 0;
 }
