@@ -49,10 +49,10 @@ public:
 
 int main() {
     
-    std::cout << "Enter the number of rows: ";
+    std::cout << "Enter number of rows: ";
     int cols, rows;
     std::cin >> rows;
-    std::cout << "Enter the number of columns: ";
+    std::cout << "Enter number of columns: ";
     std::cin >> cols;
 
     Sparse matrix(rows, cols);
@@ -60,7 +60,7 @@ int main() {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             int value;
-            std::cout << "Enter value at row " << i << " and column " << j << ": ";
+            std::cout << "Enter a value for row " << i << " and column " << j << ": ";
             std::cin >> value;
             matrix.insertElement(i, j,value);
         }
