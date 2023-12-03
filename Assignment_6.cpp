@@ -1,85 +1,83 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-using namespace std;
 
 // Definition for a binary tree node.
 struct Node {
-    char input_string;
-    unsigned repeat_frequency;
-    Node *left_node, *right_node;
+    char inputString;
+    unsigned repeatFrequency;
+    Node *leftNode, *rightNode;
 
     // Constructor
-    Node(char input_data, unsigned repeatition, Node* lft_n = NULL, Node* rht_n = NULL)
-        : input_string(input_data), repeat_frequency(repeatition), left_node(lft_n), right_node(rht_n) {}
+    Node(char inputData, unsigned repetition, Node* leftN = nullptr, Node* rightN = nullptr)
+        : inputString(inputData), repeatFrequency(repetition), leftNode(leftN), rightNode(rightN) {}
 };
 
-struct compare {
-    bool operator()(Node* lft_n, Node* rht_n) {
-        return (lft_n->repeat_frequency > rht_n->repeat_frequency);
+struct Compare {
+    bool operator()(Node* leftN, Node* rightN) {
+        return (leftN->repeatFrequency > rightN->repeatFrequency);
     }
 };
 
-// Function to print the huffman code for each character.
-void print_output_codes(Node* root_node, string str_value) {
-    if (!root_node)
+// Function to print the Huffman code for each character.
+void printOutputCodes(Node* rootNode, std::string strValue) {
+    if (!rootNode)
         return;
 
-    if (root_node->input_string != '$' && root_node->input_string != '\0') // if the node is a leaf node
-        cout << root_node->input_string << ": " << str_value << "\n";
+    if (rootNode->inputString != '$' && rootNode->inputString != '\0') // if the node is a leaf node
+        std::cout << rootNode->inputString << ": " << strValue << "\n";
 
     // traverse the left subtree
-    print_output_codes(root_node->left_node, str_value + "0");
+    printOutputCodes(rootNode->leftNode, strValue + "0");
     // traverse the right subtree
-    print_output_codes(root_node->right_node, str_value + "1");
+    printOutputCodes(rootNode->rightNode, strValue + "1");
 }
 
-// Function to print the huffman tree
-void Huffman_Coding(char data_input[], int repeat_freq[], int length) {
-    Node *left_side, *right_side, *top_value;
-    priority_queue<Node*, vector<Node*>, compare> min_Heap;
+// Function to print the Huffman tree
+void huffmanCoding(char dataInput[], int repeatFreq[], int length) {
+    Node *leftSide, *rightSide, *topValue;
+    std::priority_queue<Node*, std::vector<Node*>, Compare> minHeap;
 
     for (int i = 0; i < length; ++i)
-        min_Heap.push(new Node(data_input[i], repeat_freq[i]));
+        minHeap.push(new Node(dataInput[i], repeatFreq[i]));
 
-    while (min_Heap.size() != 1) {
-        left_side = min_Heap.top();
-        min_Heap.pop();
+    while (minHeap.size() != 1) {
+        leftSide = minHeap.top();
+        minHeap.pop();
 
-        right_side = min_Heap.top();
-        min_Heap.pop();
+        rightSide = minHeap.top();
+        minHeap.pop();
 
-        top_value = new Node('$', left_side->repeat_frequency + right_side->repeat_frequency, left_side, right_side);
-        min_Heap.push(top_value);
+        topValue = new Node('$', leftSide->repeatFrequency + rightSide->repeatFrequency, leftSide, rightSide);
+        minHeap.push(topValue);
     }
 
-    print_output_codes(min_Heap.top(), ""); // print the huffman tree
+    printOutputCodes(minHeap.top(), ""); // print the Huffman tree
 }
 
 int main() {
-    int no_of_characters;
+    int noOfCharacters;
 
     // Prompting the user to enter the length of the array
-    cout << "Enter the length of the arrays: ";
-    cin >> no_of_characters;
+    std::cout << "Enter the length of the arrays: ";
+    std::cin >> noOfCharacters;
 
     // Allocating the memory for the arrays
-    char *arr_values = new char[no_of_characters];
-    int *repeat_freq = new int[no_of_characters];
+    char *arrValues = new char[noOfCharacters];
+    int *repeatFreq = new int[noOfCharacters];
 
     // Prompting the user to enter the characters in the array
-    cout << "Enter the characters: ";
-    for (int i = 0; i < no_of_characters; ++i)
-        cin >> arr_values[i];
+    std::cout << "Enter the characters: ";
+    for (int i = 0; i < noOfCharacters; ++i)
+        std::cin >> arrValues[i];
 
     // Prompting the user to enter the frequencies of the characters
-    cout << "Enter the repeat frequencies: ";
-    for (int i = 0; i < no_of_characters; ++i)
-        cin >> repeat_freq[i];
+    std::cout << "Enter the repeat frequencies: ";
+    for (int i = 0; i < noOfCharacters; ++i)
+        std::cin >> repeatFreq[i];
 
     // Calling the Huffman Coding function
-    Huffman_Coding(arr_values, repeat_freq, no_of_characters);
+    huffmanCoding(arrValues, repeatFreq, noOfCharacters);
 
-  
     return 0;
 }
