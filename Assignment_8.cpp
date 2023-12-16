@@ -8,12 +8,12 @@
 #include <netdb.h>
 #include <unistd.h>
 
-// Function to perform right rotation
+// To perform Right shit opertaion
 inline uint32_t rightRotate(uint32_t element_value, int shift_across) {
     return (element_value >> shift_across) | (element_value << (32 - shift_across));
 }
 
-// SHA-256 Compression function
+// Function to compress the hash values
 void sha256Compress(std::vector<uint32_t>& hash_value, const std::vector<uint32_t>& k, const std::vector<uint32_t>& w) {
     for (int i = 0; i < 64; ++i) {
         uint32_t s1_value = rightRotate(hash_value[4], 6) ^ rightRotate(hash_value[4], 11) ^ rightRotate(hash_value[4], 25);
@@ -36,10 +36,6 @@ void sha256Compress(std::vector<uint32_t>& hash_value, const std::vector<uint32_
 
 // SHA-256 Hash function
 std::vector<uint32_t> sha256(const std::string& message_url) {
-    std::vector<uint32_t> hash_values = {
-        0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
-        0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
-    };
 
     std::vector<uint32_t> k_values = {
         0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
@@ -59,6 +55,11 @@ std::vector<uint32_t> sha256(const std::string& message_url) {
         0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
         0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     };
+
+  std::vector<uint32_t> hash_values = {
+      0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+      0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+  };
 
     // Pre-processing (Padding)
     uint64_t original_message_Length = message_url.length() * 8;
@@ -138,18 +139,16 @@ std::string fetchContent(const std::string& host, const std::string& path) {
     while ((bytesRead_value = recv(sock_fd, buffer_value, sizeof(buffer_value), 0)) > 0) {
         response_received.write(buffer_value, bytesRead_value);
     }
-
-    close(sock_fd); // Close the socket
+//close socket connection
+    close(sock_fd); 
 
     return response_received.str();
 }
 
 int main() {
-    // Example usage
+  
     std::string host_taken = "quod.lib.umich.edu";
-    // std::string host_taken = "en.wikipedia.org";
     std::string path_taken = "/cgi/r/rsv/rsv-idx?type=DIV1&byte=4697892";
-    // std::string path_taken = "/wiki/Wiki";
     std::string content_received = fetchContent(host_taken, path_taken);
 
     if (!content_received.empty()) {
